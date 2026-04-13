@@ -1,0 +1,22 @@
+{
+  "sessionId": "",
+  "userId": "",
+  "startTime": "",
+  "lastActivity": "",
+  "context": {
+    "currentWorkoutPlan": null,
+    "activeWorkout": null,
+    "chatHistory": [],
+    "pendingInsights": []
+  },
+  "state": {
+    "isOnboarded": false,
+    "hasActivePlan": false,
+    "inActiveWorkout": false
+  },
+  "cache": {
+    "userProfile": null,
+    "recentWorkouts": [],
+    "exerciseLibrary": null
+  }
+}

@@ -1,0 +1,177 @@
+tools:
+  - name: deepseek_api
+    type: api
+    description: "Primary LLM for workout plan generation, chat responses, and progress insights"
+    required: true
+    priority: 1
+    config:
+      endpoint: "https://api.deepseek.com/v1/chat/completions"
+      auth: api_key
+      env_var: DEEPSEEK_API_KEY
+      model: deepseek-chat
+      max_tokens: 2500
+      temperature: 0.7
+    use_cases:
+      - workout_plan_generation
+      - complex_chat_responses
+      - progress_insights
+      - nutrition_advice
+    cost:
+      input: "$0.14 per 1M tokens"
+      output: "$0.28 per 1M tokens"
+    schema:
+      input:
+        model: string
+        messages: array
+        temperature: float
+        max_tokens: int
+      output:
+        id: string
+        choices: array
+        usage: object
+
+  - name: ollama
+    type: local_llm
+    description: "Local LLM fallback for development, offline mode, and simple Q&A"
+    required: false
+    priority: 2
+    config:
+      endpoint: "http://localhost:11434/api/chat"
+      auth: none
+      env_var: OLLAMA_BASE_URL
+      model: llama3
+      max_tokens: 2000
+      temperature: 0.7
+    use_cases:
+      - development_mode
+      - offline_scenarios
+      - simple_form_questions
+      - template_generation
+    cost:
+      input: "free (local)"
+      output: "free (local)"
+    setup:
+      - "Install Ollama: https://ollama.ai"
+      - "Run: ollama pull llama3"
+      - "Start server: ollama serve"
+    schema:
+      input:
+        model: string
+        messages: array
+        stream: boolean
+      output:
+        message: object
+        done: boolean
+
+  - name: firebase_firestore
+    type: database
+    description: "NoSQL database for user profiles, workout history, and progress tracking"
+    required: true
+    config:
+      auth: firebase_sdk
+      env_vars:
+        - FIREBASE_API_KEY
+        - FIREBASE_AUTH_DOMAIN
+        - FIREBASE_PROJECT_ID
+        - FIREBASE_STORAGE_BUCKET
+        - FIREBASE_MESSAGING_SENDER_ID
+        - FIREBASE_APP_ID
+    collections:
+      - name: users
+        description: "User profiles and preferences"
+        schema:
+          userId: string
+          email: string
+          profile: object
+          createdAt: timestamp
+      - name: workoutPlans
+        description: "Generated workout plans"
+        schema:
+          planId: string
+          userId: string
+          workouts: array
+          createdAt: timestamp
+      - name: workoutHistory
+        description: "Completed workouts"
+        schema:
+          workoutId: string
+          userId: string
+          completedAt: timestamp
+          exercises: array
+          duration: number
+      - name: chatHistory
+        description: "Chat conversations"
+        schema:
+          chatId: string
+          userId: string
+          messages: array
+          createdAt: timestamp
+      - name: progressMetrics
+        description: "Streaks, PRs, analytics"
+        schema:
+          userId: string
+          currentStreak: number
+          longestStreak: number
+          totalWorkouts: number
+          personalRecords: array
+
+  - name: youtube_api
+    type: api
+    description: "Exercise video tutorial search"
+    required: false
+    priority: 3
+    config:
+      endpoint: "https://www.googleapis.com/youtube/v3/search"
+      auth: api_key
+      env_var: YOUTUBE_API_KEY
+      quota_limit: 10000_per_day
+    use_cases:
+      - exercise_video_tutorials
+      - form_demonstration_links
+    fallback:
+      type: direct_search_url
+      pattern: "https://www.youtube.com/results?search_query={exercise}+proper+form"
+    schema:
+      input:
+        q: string
+        part: string
+        maxResults: int
+      output:
+        items: array
+        nextPageToken: string
+
+integration_logic:
+  llm_provider_selection:
+    - if: "deepseek_available && !rate_limited"
+      use: deepseek_api
+    - elif: "ollama_available"
+      use: ollama
+    - else: "template_responses"
+
+  database_operations:
+    - read: "user profile, workout history, progress metrics"
+    - write: "workout completions, chat logs, insights"
+    - realtime: "partner workout sessions (Firestore realtime listeners)"
+
+  video_integration:
+    - if: "youtube_api_available"
+      fetch: "video ID from API"
+    - else:
+      generate: "search URL for user to click"
+
+error_handling:
+  llm_timeout: 20s
+  database_timeout: 10s
+  api_retry_attempts: 3
+  retry_backoff: exponential
+
+caching:
+  exercise_library:
+    ttl: 24h
+    location: local_memory
+  user_profile:
+    ttl: session
+    location: react_context
+  video_results:
+    ttl: 7d
+    location: firestore

@@ -1,0 +1,95 @@
+/* Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Font imports are added via JavaScript in theme.ts */
+body {
+  font-family: 'Nunito', sans-serif;
+  background: #FDF8F5;
+  color: #1C1410;
+  overflow-x: hidden;
+}
+
+/* Hide scrollbar */
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+/* Animation keyframes */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Utility classes */
+.fu {
+  animation: fadeUp 0.45s ease both;
+}
+.fu1 {
+  animation: fadeUp 0.45s 0.07s ease both;
+}
+.fu2 {
+  animation: fadeUp 0.45s 0.14s ease both;
+}
+.fu3 {
+  animation: fadeUp 0.45s 0.21s ease both;
+}
+.fu4 {
+  animation: fadeUp 0.45s 0.28s ease both;
+}

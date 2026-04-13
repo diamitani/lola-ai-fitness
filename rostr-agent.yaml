@@ -1,0 +1,96 @@
+rostr_version: "1.0"
+
+agent:
+  id: "lola-fitness-coach"
+  name: "Lola - AI Fitness Coach"
+  description: "Personalized AI fitness coach that generates custom workout plans, provides real-time motivation, and delivers progress insights"
+  version: "1.0.0"
+  author: "ROSTR Agent Builder"
+  license: "MIT"
+  created: "2026-04-13"
+
+framework:
+  pal: true
+  ragdal: true
+  npao: true
+  hub: true
+
+capabilities:
+  - workout_plan_generation
+  - fitness_coaching_chat
+  - progress_analysis
+  - achievement_tracking
+  - exercise_video_integration
+  - nutrition_guidance
+  - form_coaching
+  - motivation_support
+
+primary_phase: development
+secondary_phases:
+  - design
+  - pre_d
+
+orchestration_pattern: conditional_branch
+
+exports:
+  - claude_skill
+  - claude_project
+  - openclaw
+  - standalone
+  - backend_implementation
+
+tools:
+  - name: deepseek_api
+    type: api
+    required: true
+    description: "Primary LLM for workout generation and chat responses"
+  - name: ollama
+    type: local_llm
+    required: false
+    description: "Local LLM fallback for offline/development mode"
+  - name: firebase_firestore
+    type: database
+    required: true
+    description: "User profiles, workout history, and progress tracking"
+  - name: youtube_api
+    type: api
+    required: false
+    description: "Exercise video tutorial search"
+
+env_vars:
+  - DEEPSEEK_API_KEY
+  - DEEPSEEK_API_URL
+  - OLLAMA_BASE_URL
+  - FIREBASE_API_KEY
+  - FIREBASE_AUTH_DOMAIN
+  - FIREBASE_PROJECT_ID
+  - FIREBASE_STORAGE_BUCKET
+  - FIREBASE_MESSAGING_SENDER_ID
+  - FIREBASE_APP_ID
+  - YOUTUBE_API_KEY
+
+integrations:
+  frontend:
+    framework: "React + TypeScript + Vite"
+    state_management: "React Context"
+    styling: "Custom design system"
+  backend:
+    runtime: "Node.js"
+    ai_providers:
+      - deepseek
+      - ollama
+    database: "Firebase Firestore"
+
+state_persistence:
+  cross_session: true
+  persistence_layer: "Firebase Firestore"
+  state_types:
+    - user_profile
+    - workout_history
+    - conversation_context
+    - progress_metrics
+    - learned_preferences
+
+safety_level: medium
+domain: fitness_health
+autonomy: semi_autonomous

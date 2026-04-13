@@ -1,0 +1,3 @@
+{"timestamp":"2026-04-13T10:00:00Z","userId":"example_user","learning":"Users with 'lose fat' goal respond better to circuit-style workouts with minimal rest","confidence":0.75,"source":"pattern_analysis"}
+{"timestamp":"2026-04-13T14:30:00Z","userId":"example_user","learning":"Beginners often underestimate warmup importance—need to emphasize this in plan delivery","confidence":0.85,"source":"user_feedback"}
+{"timestamp":"2026-04-13T16:45:00Z","userId":"example_user","learning":"Users are more likely to complete workouts when video tutorials are provided for unfamiliar exercises","confidence":0.90,"source":"completion_rate_analysis"}

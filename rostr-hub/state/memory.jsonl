@@ -1,0 +1,5 @@
+{"timestamp":"2026-04-13T09:00:00Z","userId":"example_user","event":"user_onboarded","data":{"goals":["lose fat","tone up"],"equipment":["dumbbells"],"experience":"beginner"}}
+{"timestamp":"2026-04-13T09:15:00Z","userId":"example_user","event":"workout_plan_generated","data":{"planId":"plan_001","type":"full_body","frequency":"3x_week"}}
+{"timestamp":"2026-04-13T18:30:00Z","userId":"example_user","event":"workout_completed","data":{"workoutId":"wo_001","duration":"42min","exercisesCompleted":6}}
+{"timestamp":"2026-04-14T08:00:00Z","userId":"example_user","event":"chat_interaction","data":{"topic":"form_question","exercise":"squats","resolved":true}}
+{"timestamp":"2026-04-14T19:00:00Z","userId":"example_user","event":"workout_completed","data":{"workoutId":"wo_002","duration":"38min","exercisesCompleted":6,"newPR":{"exercise":"push_ups","value":12}}}

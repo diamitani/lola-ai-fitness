@@ -1,0 +1,104 @@
+ragdal:
+  enabled: true
+  mode: fitness_knowledge
+  agent_id: lola-fitness-coach
+
+  # Knowledge retrieval is primarily from built-in domain knowledge
+  # External retrieval used for: latest exercise trends, new research, user-specific questions
+
+  source_tiers:
+    tier_1:
+      - name: "Built-in Exercise Science Knowledge"
+        type: internal
+        location: rostr-hub/context/domain-knowledge.md
+        authority: high
+        use_for: [exercise_form, program_design, biomechanics, nutrition_basics]
+
+      - name: "ACSM Guidelines"
+        type: reference
+        description: "American College of Sports Medicine - exercise standards"
+        authority: high
+        use_for: [training_guidelines, safety_protocols]
+
+      - name: "NSCA Exercise Database"
+        type: reference
+        description: "National Strength and Conditioning Association"
+        authority: high
+        use_for: [exercise_techniques, program_design]
+
+    tier_2:
+      - name: "PubMed Exercise Science"
+        type: external
+        description: "Peer-reviewed exercise science research"
+        authority: medium-high
+        use_for: [advanced_questions, research_backed_answers]
+
+      - name: "Examine.com"
+        type: external
+        description: "Evidence-based nutrition and supplement research"
+        authority: medium-high
+        use_for: [nutrition_questions, supplement_safety]
+
+    tier_3:
+      - name: "YouTube Exercise Tutorials"
+        type: external
+        description: "Video demonstrations for exercise form"
+        authority: medium
+        use_for: [visual_learning, form_checks]
+        filter: "channels with certified trainers"
+
+  retrieval_strategy:
+    primary: "use built-in domain knowledge first"
+    secondary: "retrieve external sources only when:"
+      - user asks about new/uncommon exercises
+      - user references specific research or studies
+      - built-in knowledge insufficient
+
+    confidence_threshold: 8  # out of 10
+    max_retrieval_passes: 2
+
+  knowledge_namespace: "fitness/lola"
+
+  cache_ttl_hours: 72
+
+  retrieval_triggers:
+    - pattern: "user asks about exercise not in library"
+      action: "search tier_3 (YouTube) for video tutorial"
+
+    - pattern: "user mentions study or research"
+      action: "search tier_2 (PubMed) for validation"
+
+    - pattern: "user asks about supplement"
+      action: "search tier_2 (Examine.com) for safety info"
+
+    - pattern: "user asks advanced biomechanics question"
+      action: "search tier_1 (ACSM/NSCA) for guidelines"
+
+  quality_filters:
+    - "Prioritize sources from certified professionals (CSCS, CPT, RD)"
+    - "Exclude fad diets and pseudoscience"
+    - "Flag any supplement recommendations for safety review"
+    - "Verify exercise safety for beginners before recommending"
+
+  fallback_strategy:
+    if_no_external_sources:
+      - "Use built-in domain knowledge"
+      - "Acknowledge knowledge limits"
+      - "Recommend user consult professional (PT, RD, doctor)"
+
+  update_frequency:
+    domain_knowledge: "quarterly (manual update)"
+    external_sources: "on-demand (per query)"
+    exercise_library: "monthly"
+
+  safety_guardrails:
+    - "Never retrieve medical diagnosis information"
+    - "Never retrieve extreme diet protocols"
+    - "Never retrieve performance-enhancing drug info"
+    - "Always prioritize safety over performance"
+
+notes:
+  - "Lola's core knowledge is built-in and comprehensive"
+  - "RAG DAL primarily used for video tutorials and edge cases"
+  - "Most queries (90%+) answered from domain-knowledge.md"
+  - "External retrieval is opt-in for advanced users"
