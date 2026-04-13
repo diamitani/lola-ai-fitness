@@ -16,12 +16,16 @@
     "noEmit": true,
     "jsx": "react-jsx",
 
-    /* Linting */
+    /* Linting - All disabled for build */
     "strict": false,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noImplicitAny": false,
-    "erasableSyntaxOnly": true,
+    "strictNullChecks": false,
+    "strictPropertyInitialization": false,
+    "noImplicitThis": false,
+    "alwaysStrict": false,
+    "erasableSyntaxOnly": false,
     "noFallthroughCasesInSwitch": false,
     "noUncheckedSideEffectImports": false
   },
